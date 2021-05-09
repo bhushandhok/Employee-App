@@ -6,7 +6,7 @@ import org.springframework.context.MessageSourceResolvable;
 import org.springframework.stereotype.Service;
 
 @Service
-class MessageService implements IMessageService {
+public class MessageService implements IMessageService {
 
     private final MessageSource messageSource;
 

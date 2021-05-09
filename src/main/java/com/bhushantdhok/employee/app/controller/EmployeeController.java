@@ -12,16 +12,20 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/employee")
+@RequestMapping(EmployeeController.BASE_PATH)
 public class EmployeeController {
 
+    public static final String CITY_NAME = "/{cityName}";
+    public static final String EMPLOYEE_BY_DEPARTMENT_NAME = "/employeeByDepartmentName/{departmentName}";
     Logger logger = LoggerFactory.getLogger(EmployeeController.class);
-
+    public static final String DEPARTMENT_NAME = "/department/{departmentName}";
+    public static final String BASE_PATH = "employee";
     private EmployeeService service;
 
     public EmployeeController(EmployeeService service) {
@@ -38,7 +42,6 @@ public class EmployeeController {
     @PutMapping
     public ResponseEntity<Employee> updateEmployee(@RequestBody @Valid Employee employee) throws EmployeeNotFoundException {
 
-
         if(employee.getId() == null){
             throw new EmployeeNotFoundException("Please provide proper Employee ID to Update Employee");
         }
@@ -47,16 +50,16 @@ public class EmployeeController {
         return ResponseEntity.status(HttpStatus.OK).body(dbEmployee);
     }
 
-    @GetMapping("/department/{departmentName}")
-    public ResponseEntity<Map<?,?>> getEmployeeCount(@PathVariable @NotBlank String departmentName){
+    @GetMapping(DEPARTMENT_NAME)
+    public ResponseEntity<Map<?,?>> getEmployeeCount(@PathVariable @NotEmpty String departmentName){
         logger.info("getting Employee count by department Name= {}", departmentName);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(Collections.singletonMap("count", service.getEmployeeCountByDepartment(departmentName)));
     }
 
-    @GetMapping("/employeeByDepartmentName/{departmentName}")
-    public ResponseEntity<List<Employee>> getEmployeeListByDepartmentName(@PathVariable @NotBlank String departmentName){
+    @GetMapping(EMPLOYEE_BY_DEPARTMENT_NAME)
+    public ResponseEntity<List<Employee>> getEmployeeListByDepartmentName(@PathVariable @Valid @NotEmpty String departmentName){
         logger.info("getting Employee List by department Name= {}", departmentName);
         List<Employee> employees = service.employeeByDepartmentName(departmentName);
         return ResponseEntity
@@ -64,7 +67,7 @@ public class EmployeeController {
                 .body(employees);
     }
 
-    @GetMapping("/{cityName}")
+    @GetMapping(CITY_NAME)
     public ResponseEntity<List<Employee>> getEmployyesByCity(@PathVariable @NotBlank String cityName){
         logger.info("Getting list of Employees by cityName = {}",cityName);
         List<Employee> employees = service.getEmployeesByCity(cityName);
