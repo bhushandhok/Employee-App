@@ -28,4 +28,9 @@ public class EmployeeRepository {
     public Employee save(Employee employee) {
         return template.save(employee);
     }
+
+    public Employee getEmplyeeById(String id) {
+        Query query = new Query(Criteria.where("_id").is(id));
+        return template.findOne(query, Employee.class);
+    }
 }

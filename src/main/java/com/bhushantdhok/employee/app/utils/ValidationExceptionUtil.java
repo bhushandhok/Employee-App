@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class ValidationExceptionUtil {
-    public static final ValidationError processFieldErrors(IMessageService messageService, List<FieldError> fieldErrors) {
+    public static ValidationError processFieldErrors(IMessageService messageService, List<FieldError> fieldErrors) {
         ValidationError validationErrorDto = new ValidationError();
         for (FieldError fieldError : fieldErrors) {
             String localizedErrorMessage = resolveLocalizedFieldErrorMessage(messageService, fieldError);
@@ -22,7 +22,7 @@ public class ValidationExceptionUtil {
     }
 
 
-    public static final String resolveLocalizedFieldErrorMessage(IMessageService messageService, FieldError fieldError) {
+    public static String resolveLocalizedFieldErrorMessage(IMessageService messageService, FieldError fieldError) {
         String localizedErrorMessage = messageService.getMessage(fieldError);
         //If the message was not found, return the most accurate field error code instead.
         //You can remove this check if you prefer to get the default error message.
@@ -42,7 +42,7 @@ public class ValidationExceptionUtil {
         return errors;
     }
 
-    static final String resolveLocalizedObjectErrorMessage(IMessageService messageService, ObjectError objectError) {
+    public static String resolveLocalizedObjectErrorMessage(IMessageService messageService, ObjectError objectError) {
         Locale currentLocale = LocaleContextHolder.getLocale();
         String localizedErrorMessage = messageService.getMessage(objectError);
 

@@ -7,9 +7,6 @@ import java.util.*;
 
 public class ValidationError {
     Map<String, Set<String>> errors = new HashMap<>();
-    List<String> mandatoryFields = new ArrayList<>();
-    List<String> masterErrorFields = new ArrayList<>();
-
 
     public static ValidationError getInstance() {
         return new ValidationError();
@@ -27,39 +24,6 @@ public class ValidationError {
             errors.put(path, messages);
         }
         messages.add(message);
-        return this;
-    }
-
-
-    public ValidationError addErrors(String path, Set<String> moreMessages) {
-        Set<String> messages = null;
-        if (errors.containsKey(path)) {
-            messages = errors.get(path);
-
-        } else {
-            messages = new HashSet<>();
-            errors.put(path, messages);
-        }
-        messages.addAll(moreMessages);
-        return this;
-    }
-
-    public ValidationError addErrors(Map<String, Set<String>> errors) {
-        if (errors != null) {
-            this.errors.putAll(errors);
-        }
-        return this;
-    }
-
-    public ValidationError addMasterErrorFields(String field){
-        if (field != null)
-            masterErrorFields.add(field);
-        return this;
-    }
-
-    public ValidationError addMandatoryFields(String field){
-        if (field != null)
-            mandatoryFields.add(field);
         return this;
     }
 
